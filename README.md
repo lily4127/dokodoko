@@ -1,3 +1,4 @@
 # dokodoko
 
-config.jsにデータベースの情報入れてね
+waffle college テックキャリアコースの卒業プロジェクト
+
