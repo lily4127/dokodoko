@@ -1,0 +1,39 @@
+<head>
+    <meta charset="UTF-8">
+    <title>認証</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+
+<link rel="stylesheet" href="/css/auth.css">
+
+
+
+<h1>認証画面</h1>
+<form action="auth" method="post">
+
+    <div class = "loginbutton">
+     <div>ユーザー名<input type="text" name="name" style="size: 20px"></div>
+    <div>パスワード<input type="password" name="pass" style="size: 20px"></div>
+    <div>
+        <input type="button" value="戻る" onClick="cancel();">
+        <input type="submit" value="認証する">
+    </div>
+</form>
+<div id="msg" style="color: red;"></div>
+
+<script>
+    window.onload = function() {
+        const url = window.location.href;
+        if (!url || !url.split("msg=")[1]) {
+            return;
+        }
+        var msg = document.getElementById("msg");
+        msg.innerHTML = decodeURIComponent(url.split("msg=")[1]);
+        return;
+    }
+
+    function cancel() {
+        location.href = '/';
+    }
+</script>

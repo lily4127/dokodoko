@@ -1,0 +1,80 @@
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>買いたい本リスト</title>
+    <link rel="stylesheet" href="/css/kaitai.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    var myListLink = document.getElementById('myListLink'); // "my list"リンク
+    var kaitaiRegisterLink = document.getElementById('kaitairegister'); // "買いたい本の追加"リンク
+    var kaitaiLink = document.getElementById('kaitaiLink'); // "買いたい本のリスト"リンク
+
+    // "my list"リンクがクリックされた時の処理
+    myListLink.addEventListener('click', function(event) {
+        event.preventDefault(); // デフォルトのリンク動作を無効にする
+        // ユーザーのログインIDを取得
+        // var loginid = myListLink.getAttribute('data-loginid');
+        var loginid = kaitaiLink.getAttribute('data-loginid');
+        // "my list"ページにリダイレクト
+        window.location.href = `/user/${loginid}`;
+    });
+
+
+    // "買いたい本のリスト"リンクがクリックされた時の処理
+    kaitaiLink.addEventListener('click', function(event) {
+        event.preventDefault(); // デフォルトのリンク動作を無効にする
+        // ユーザーのログインIDを取得
+        var loginid = kaitaiLink.getAttribute('data-loginid');
+        // "買いたい本のリスト"ページにリダイレクト
+        window.location.href = `/kaitai/${loginid}`;
+    });
+
+    //買いたい本登録画面遷移
+    kaitairegister.addEventListener('click', function(event) {
+        event.preventDefault(); // デフォルトのリンク動作を無効にする
+        var loginid = kaitaiLink.getAttribute('data-loginid'); // データ属性からloginidを取得
+        window.location.href = '/kaitairegister/' + loginid; // リダイレクト
+    });
+});
+
+
+    </script>
+
+</head>
+<body>
+
+
+    <header class="header">
+        <div class="headerContents">
+            <div class="headerLeft">
+                <div class="sitename">dokodoko</div>
+                <div class="explanation">マンガを管理するアプリ</div>
+              </div>
+              <div class="addbutton">
+                <a id="myListLink" href="#" data-loginid="<%= loginid %>" class="choicebutton" data-loginid="<%= loginid %>">読んでいる本リスト</a>
+                <div class="buttonGap"></div> <!-- 隙間用のdiv -->
+                <a id="kaitairegister" href="#" class="choicebutton" data-loginid="<%= loginid %>">買いたい本の追加</a>
+            </div>
+         </div>
+      </header>
+
+      <ul class="nav">
+        <li><a id="kaitaiLink" href="#" data-loginid="<%= loginid %>" class choice>買いたい本のリスト</a></li>
+      </ul>
+     
+    <table>
+
+    <table> 
+        <tr>
+            <th>タイトル</th>
+            <th>購入（削除）</th>
+        </tr>
+        <% kaitai.forEach(function (value) { %>
+        <tr>
+            <td><%= value.title %></td>
+            <td><a href="/purchased/<%= value.id %>">購入した(削除)</a></td>
+        </tr>
+        <% }); %>
+    </table>
+</body>
+</html>

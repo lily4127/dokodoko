@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>本棚追加機能</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic&family=Dela+Gothic+One&family=Monomaniac+One&display=swap"
+        rel="stylesheet">
+
+    <!-- <link rel=“stylesheet” href=“/css/kaitairegister.css”> -->
+    <script>
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var myListLink = document.getElementById('myListLink'); // "my list"リンク
+            var kaitaiLink = document.getElementById('kaitaiLink'); // "買いたい本のリスト"リンク
+
+            // "my list"リンクがクリックされた時の処理
+            myListLink.addEventListener('click', function (event) {
+                event.preventDefault(); // デフォルトのリンク動作を無効にする
+                // ユーザーのログインIDを取得
+                // var loginid = myListLink.getAttribute('data-loginid');
+                var loginid = kaitaiLink.getAttribute('data-loginid');
+                // "my list"ページにリダイレクト
+                window.location.href = `/user/${loginid}`;
+            });
+
+            //買いたい本リストに飛ぶためのコード
+            //買いたい本のリストに飛びたい時にloginidを維持するためにsessionを使ってloginidを持ってきているから単純なurlでは飛ぶことができない
+            kaitaiLink.addEventListener('click', function (event) {
+                event.preventDefault(); // デフォルトのリンク動作を無効にする
+                var loginid = kaitaiLink.getAttribute('data-loginid'); // データ属性からloginidを取得
+                window.location.href = '/kaitai/' + loginid; // リダイレクト
+            });
+        });
+
+        //メッセージ受け取り
+        window.onload = function () {
+            const url = window.location.href;
+            if (!url || !url.split("msg=")[1]) {
+                return;
+            }
+            var msg = document.getElementById("msg");
+            msg.innerHTML = decodeURIComponent(url.split("msg=")[1]);
+            return;
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="headerContents">
+            <div class="headerLeft">
+                <div class="sitename">dokodoko</div>
+                <div class="explanation">マンガを管理するアプリ</div>
+            </div>
+            <div class="addbutton">
+                <a id="register" class="choicebutton" href="#">本の追加</a>
+                <div class="buttonGap"></div> <!-- 隙間用のdiv -->
+                <a id="kaitaiLink" href="#" data-loginid="<%= loginid %>" class="choicebutton"
+                    data-loginid="<%= loginid %>">買いたい本リスト</a>
+            </div>
+        </div>
+    </header>
+
+    <ul class="nav">
+        <li><a id="myListLink" class="choice" href="#" data-loginid="<%= loginid %>">my list</a></li>
+        <!-- <li><a href="/register" class="choice" data-loginid="<%= loginid %>">本の追加</a></li> -->
+        <!-- <li><a id="kaitaiLink" href="#" data-loginid="<%= loginid %>" class="choice">買いたい本のリスト</a></li> -->
+        <!-- <li><a href="/kaitairegister" class="choice" data-loginid="<%= loginid %>">買いたい本の追加</a></li> -->
+    </ul>
+
+
+    <table>
+        <h1>本棚に追加</h1>
+        <form action="/register/:loginid" method="POST">
+            タイトル <input type="text" name="title"><br>
+            今持っている巻数<input type="number" name="purchased"><br>
+            <button type="submit">送信</button>
+
+            <button id="kaitaiLink">戻る</button>
+
+
+        </form>
+        <div id="msg" style="color: red;"></div>
+</body>
+
+</html>
